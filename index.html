@@ -6,15 +6,16 @@
   <title>RTC Tool System</title>
   <style>
     :root {
-      --glass-bg: rgba(242, 242, 247, 0.75);
-      --glass-card: rgba(255, 255, 255, 0.65);
-      --glass-card-hover: rgba(255, 255, 255, 0.85);
-      --glass-border: rgba(255, 255, 255, 0.6);
-      --glass-separator: rgba(60, 60, 67, 0.12);
+      --glass-bg: rgba(242, 242, 247, 0.78);
+      --glass-card: rgba(255, 255, 255, 0.72);
+      --glass-card-hover: rgba(255, 255, 255, 0.9);
+      --glass-border: rgba(255, 255, 255, 0.65);
+      --glass-separator: rgba(60, 60, 67, 0.14);
       --page-bg: #f2f2f7;
       --ios-blue: #007aff;
       --ios-green: #34c759;
       --ios-green-tint: rgba(52, 199, 89, 0.16);
+      --ios-red: #ff3b30;
       --ios-label: #000000;
       --ios-secondary-label: #6c6c70;
       --ios-tertiary-label: #8e8e93;
@@ -23,15 +24,16 @@
     }
 
     [data-theme="dark"] {
-      --glass-bg: rgba(18, 18, 20, 0.75);
-      --glass-card: rgba(28, 28, 32, 0.65);
-      --glass-card-hover: rgba(38, 38, 44, 0.85);
-      --glass-border: rgba(255, 255, 255, 0.12);
-      --glass-separator: rgba(84, 84, 88, 0.4);
+      --glass-bg: rgba(18, 18, 20, 0.78);
+      --glass-card: rgba(28, 28, 32, 0.72);
+      --glass-card-hover: rgba(38, 38, 44, 0.9);
+      --glass-border: rgba(255, 255, 255, 0.14);
+      --glass-separator: rgba(84, 84, 88, 0.42);
       --page-bg: #000000;
       --ios-blue: #0a84ff;
       --ios-green: #30d158;
       --ios-green-tint: rgba(48, 209, 88, 0.2);
+      --ios-red: #ff453a;
       --ios-label: #ffffff;
       --ios-secondary-label: #98989d;
       --ios-tertiary-label: #636366;
@@ -49,6 +51,10 @@
       user-select: none;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       background-color: var(--page-bg);
       color: var(--ios-label);
@@ -62,10 +68,7 @@
     /* --- Smart Page Loader Overlay --- */
     #pageLoader {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      inset: 0;
       background-color: var(--page-bg);
       z-index: 9999;
       display: flex;
@@ -73,23 +76,22 @@
       align-items: center;
       justify-content: center;
       gap: 16px;
-      transition: opacity 0.4s ease, visibility 0.4s ease;
-      will-change: opacity;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
     }
 
     #pageLoader.fade-out {
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
     }
 
     .loader-spinner {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border: 3px solid var(--glass-separator);
       border-top-color: var(--ios-blue);
       border-radius: 50%;
       animation: spin 0.75s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-      will-change: transform;
     }
 
     .loader-text {
@@ -101,31 +103,27 @@
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      to { transform: rotate(360deg); }
     }
 
-    /* Optimized Hardware-Accelerated Canvas Background */
     #glassCanvas {
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100vw;
       height: 100vh;
       pointer-events: none;
       z-index: 0;
-      will-change: transform;
     }
 
     header, main {
       position: relative;
       z-index: 10;
       opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(10px);
+      transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    body.loaded header, 
+    body.loaded header,
     body.loaded main {
       opacity: 1;
       transform: translateY(0);
@@ -136,16 +134,15 @@
       text-decoration: none;
     }
 
-    /* Lag-free Frosted Glass Navigation Bar */
+    /* --- Navigation Bar --- */
     header {
       position: sticky;
       top: 0;
       z-index: 100;
       background-color: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       border-bottom: 0.5px solid var(--glass-border);
-      will-change: backdrop-filter;
     }
 
     .nav-container {
@@ -197,15 +194,10 @@
       color: var(--ios-blue);
     }
 
-    .nav-links a {
-      transition: opacity 0.15s ease;
-    }
-
     .nav-links a:hover {
       opacity: 0.75;
     }
 
-    /* Theme Toggle & Menu Buttons with Spring Tapping Effect */
     .btn-icon {
       display: inline-flex;
       align-items: center;
@@ -217,8 +209,7 @@
       border-radius: 50%;
       color: var(--ios-label);
       cursor: pointer;
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.15s ease;
-      will-change: transform;
+      transition: transform 0.22s cubic-bezier(0.22, 1.4, 0.36, 1), background-color 0.15s ease;
     }
 
     .btn-icon:hover {
@@ -229,23 +220,21 @@
       transform: scale(0.84);
     }
 
-    /* iOS Style Popover Menu */
     .ios-menu-dropdown {
       position: absolute;
-      top: 48px;
+      top: 46px;
       right: 0;
-      width: 240px;
-      background: var(--glass-card);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
+      width: 244px;
+      background: var(--glass-card-hover);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 0.5px solid var(--glass-border);
       border-radius: var(--ios-radius-lg);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
       padding: 6px;
       display: none;
       z-index: 1000;
-      animation: menuFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform, opacity;
+      animation: menuFadeIn 0.2s cubic-bezier(0.22, 1.35, 0.36, 1);
     }
 
     .ios-menu-dropdown.active {
@@ -253,7 +242,7 @@
     }
 
     @keyframes menuFadeIn {
-      from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+      from { opacity: 0; transform: translateY(-6px) scale(0.95); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
@@ -275,16 +264,11 @@
       font-size: 14px;
       font-weight: 500;
       color: var(--ios-label);
-      transition: background-color 0.15s ease, transform 0.15s ease;
-      will-change: transform;
+      transition: background-color 0.15s ease;
     }
 
     .ios-menu-item:hover {
-      background-color: var(--glass-card-hover);
-    }
-
-    .ios-menu-item:active {
-      transform: scale(0.97);
+      background-color: var(--glass-separator);
     }
 
     .ios-menu-item svg {
@@ -296,29 +280,26 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background-color: rgba(0, 122, 255, 0.12);
+      background-color: rgba(0, 122, 255, 0.14);
       color: var(--ios-blue);
       padding: 6px 14px;
       border-radius: 999px;
       font-weight: 600;
       font-size: 13px;
-      border: 0.5px solid rgba(0, 122, 255, 0.2);
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.15s ease;
-      will-change: transform;
+      border: 0.5px solid rgba(0, 122, 255, 0.24);
+      transition: transform 0.22s cubic-bezier(0.22, 1.4, 0.36, 1);
     }
 
     .btn-telegram:active {
       transform: scale(0.93);
     }
 
-    /* Main Container */
     main {
       max-width: 980px;
       margin: 0 auto;
       padding: 32px 20px 80px;
     }
 
-    /* Glass App Hero Section */
     .app-hero {
       display: flex;
       align-items: flex-start;
@@ -331,7 +312,7 @@
       height: 108px;
       border-radius: 28px;
       background: linear-gradient(145deg, #34c759 0%, #1d7d35 100%);
-      box-shadow: 0 12px 30px rgba(52, 199, 89, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+      box-shadow: 0 12px 30px rgba(52, 199, 89, 0.28), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -340,8 +321,7 @@
       font-weight: 800;
       font-size: 28px;
       letter-spacing: 0.03em;
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      will-change: transform;
+      transition: transform 0.35s cubic-bezier(0.22, 1.45, 0.36, 1);
     }
 
     .ios-app-icon:active {
@@ -376,26 +356,57 @@
       margin-top: 14px;
     }
 
+    /* --- Fluid Liquid Get APK Button --- */
     .btn-get {
+      position: relative;
+      overflow: hidden;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      background-color: var(--ios-blue);
+      gap: 7px;
+      background: linear-gradient(135deg, var(--ios-blue), #3898ff, var(--ios-blue));
+      background-size: 220% 220%;
       color: #ffffff;
       font-weight: 700;
       font-size: 15px;
       letter-spacing: 0.01em;
-      padding: 8px 24px;
+      padding: 9px 24px;
       border-radius: 999px;
-      box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.15s ease;
-      will-change: transform;
+      border: 0.5px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 6px 20px rgba(0, 122, 255, 0.35);
+      transition: transform 0.32s cubic-bezier(0.22, 1.45, 0.36, 1), box-shadow 0.25s ease, background-position 0.6s ease;
+      cursor: pointer;
+      animation: liquidFlow 5s ease infinite;
+    }
+
+    .btn-get::before {
+      content: "";
+      position: absolute;
+      inset: -40% -20%;
+      background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.38), transparent 58%);
+      transform: translateY(0) scale(1);
+      transition: transform 0.45s cubic-bezier(0.22, 1.4, 0.36, 1), opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .btn-get:hover {
+      background-position: 100% 50%;
+      box-shadow: 0 10px 26px rgba(0, 122, 255, 0.48);
+      transform: translateY(-1px) scale(1.03);
+    }
+
+    .btn-get:hover::before {
+      transform: translate(12%, -10%) scale(1.15);
     }
 
     .btn-get:active {
-      transform: scale(0.92);
-      opacity: 0.85;
+      transform: scale(0.91);
+      box-shadow: 0 3px 12px rgba(0, 122, 255, 0.25);
+    }
+
+    @keyframes liquidFlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
     .version-pill {
@@ -408,13 +419,10 @@
       border: 0.5px solid rgba(52, 199, 89, 0.25);
     }
 
-    /* Glass Metrics Bar */
     .ios-metrics-bar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       background: var(--glass-card);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
       border: 0.5px solid var(--glass-border);
       border-radius: var(--ios-radius-lg);
       padding: 16px 0;
@@ -453,9 +461,6 @@
       font-size: 20px;
       font-weight: 700;
       color: var(--ios-secondary-label);
-      display: flex;
-      align-items: center;
-      gap: 4px;
     }
 
     .metric-sub {
@@ -463,11 +468,10 @@
       color: var(--ios-tertiary-label);
     }
 
-    /* Section Header */
     .ios-section-header {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
       padding: 0 4px 8px;
       margin-top: 32px;
     }
@@ -478,20 +482,16 @@
       letter-spacing: -0.015em;
     }
 
-    /* Frosted Glass Card with subtle tactile press */
     .ios-card {
       background: var(--glass-card);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
       border: 0.5px solid var(--glass-border);
       border-radius: var(--ios-radius-lg);
       padding: 18px 20px;
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease;
-      will-change: transform;
+      transition: transform 0.25s cubic-bezier(0.22, 1.35, 0.36, 1), background-color 0.2s ease;
     }
 
     .ios-card:active {
-      transform: scale(0.985);
+      transform: scale(0.99);
       background: var(--glass-card-hover);
     }
 
@@ -500,41 +500,31 @@
       color: var(--ios-label);
     }
 
-    .ios-card p + p {
-      margin-top: 12px;
-      color: var(--ios-secondary-label);
-    }
-
     .meta-footer-note {
       font-size: 13px;
       color: var(--ios-tertiary-label);
       padding: 10px 8px 0;
     }
 
-    /* Glass Feature Grid */
     .ios-features-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr;
       gap: 14px;
     }
 
     .ios-feature-tile {
       background: var(--glass-card);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
       border: 0.5px solid var(--glass-border);
       border-radius: var(--ios-radius-lg);
       padding: 18px;
       display: flex;
       gap: 14px;
       align-items: flex-start;
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease;
-      will-change: transform;
-      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.22, 1.35, 0.36, 1), background-color 0.2s ease;
     }
 
     .ios-feature-tile:active {
-      transform: scale(0.965);
+      transform: scale(0.98);
       background-color: var(--glass-card-hover);
     }
 
@@ -563,11 +553,8 @@
       line-height: 1.4;
     }
 
-    /* Glass Settings-Style Table List */
     .ios-list-group {
       background: var(--glass-card);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
       border: 0.5px solid var(--glass-border);
       border-radius: var(--ios-radius-lg);
       overflow: hidden;
@@ -599,9 +586,6 @@
 
     .ios-row-label {
       color: var(--ios-secondary-label);
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
     .ios-row-value {
@@ -613,14 +597,159 @@
     .ios-row-value a {
       color: var(--ios-blue);
       text-decoration: underline;
+      cursor: pointer;
     }
 
-    /* Responsive */
-    @media (max-width: 680px) {
-      .ios-features-grid {
-        grid-template-columns: 1fr;
-      }
+    /* --- Fluid Liquid Download Modal Overlay --- */
+    .ios-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.48);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.35s ease;
+    }
 
+    .ios-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .ios-modal-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--glass-card-hover);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 0.5px solid var(--glass-border);
+      border-radius: var(--ios-radius-xl);
+      padding: 26px 22px;
+      width: 90%;
+      max-width: 330px;
+      text-align: center;
+      transform: scale(0.86) translateY(22px);
+      opacity: 0;
+      transition: transform 0.45s cubic-bezier(0.22, 1.4, 0.36, 1), opacity 0.3s ease;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.32);
+    }
+
+    .ios-modal-card::before {
+      content: "";
+      position: absolute;
+      top: -60%;
+      left: -30%;
+      width: 160%;
+      height: 110%;
+      background: radial-gradient(circle, rgba(10, 132, 255, 0.18), transparent 68%);
+      animation: modalBlob 6s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes modalBlob {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(8%, 10%) scale(1.12); }
+    }
+
+    .ios-modal-overlay.active .ios-modal-card {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      z-index: 2;
+      top: 14px;
+      right: 14px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(120, 120, 128, 0.16);
+      border: none;
+      color: var(--ios-secondary-label);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.22, 1.4, 0.36, 1), background 0.2s ease;
+    }
+
+    .modal-close-btn:active {
+      transform: scale(0.88);
+      background: rgba(120, 120, 128, 0.24);
+    }
+
+    .modal-title {
+      position: relative;
+      z-index: 2;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: -0.015em;
+      color: var(--ios-label);
+    }
+
+    .modal-desc {
+      position: relative;
+      z-index: 2;
+      font-size: 14px;
+      color: var(--ios-secondary-label);
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .modal-actions {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .btn-modal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: var(--ios-radius-lg);
+      font-weight: 600;
+      font-size: 15px;
+      transition: transform 0.28s cubic-bezier(0.22, 1.45, 0.36, 1), filter 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-modal:hover {
+      transform: translateY(-1px) scale(1.015);
+    }
+
+    .btn-modal:active {
+      transform: scale(0.95);
+      filter: brightness(0.92);
+    }
+
+    .btn-drive {
+      background-color: var(--ios-blue);
+      color: #fff;
+    }
+
+    .btn-mediafire {
+      background-color: var(--ios-green);
+      color: #fff;
+    }
+
+    .btn-mega {
+      background-color: var(--ios-red);
+      color: #fff;
+    }
+
+    @media (max-width: 680px) {
       .ios-app-icon {
         width: 88px;
         height: 88px;
@@ -644,16 +773,13 @@
 </head>
 <body>
 
-  <!-- Smart Entry Loading Animation Overlay -->
   <div id="pageLoader">
     <div class="loader-spinner"></div>
     <div class="loader-text">RTC Tool System</div>
   </div>
 
-  <!-- Optimized Falling Blue Glass Triangles Canvas Background -->
   <canvas id="glassCanvas"></canvas>
 
-  <!-- Frosted Glass Top Navigation Bar -->
   <header>
     <div class="nav-container">
       <a href="#" class="nav-brand">
@@ -663,26 +789,14 @@
       <div class="nav-right">
         <nav class="nav-links">
           <a href="#">Home</a>
-          <a href="https://download1530.mediafire.com/e5lyes7lgx7gUZQzJCRqsNI9rSnwkspw3PVTPby82YP4a6ZAl2yCAe2r8prfOxOM8znIrVpNBEvEi04PqmaavkApPlsYyAA3QNPpjthjCwF0tw7F491NOUsYaj5Wbov55DKWfR5FEcH8R0VFTa4xBfXqQLHn9GiPHRjyjU6g7ej8T2Ob/3z3qtbcm36i5v5j/RTC-Tool-System-debug.apk" target="_blank">Download</a>
+          <a href="#" class="download-trigger">Download</a>
         </nav>
 
-        <!-- Theme Toggle Button -->
-        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
-          <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-          </svg>
+        <button class="btn-icon" id="themeToggle" type="button" aria-label="Toggle Theme">
+          <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></svg>
         </button>
 
-        <!-- Triple Dot Menu Button -->
-        <button class="btn-icon" id="menuToggle" aria-label="More Options">
+        <button class="btn-icon" id="menuToggle" type="button" aria-label="More Options" aria-expanded="false">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <circle cx="12" cy="5" r="2"></circle>
             <circle cx="12" cy="12" r="2"></circle>
@@ -690,18 +804,15 @@
           </svg>
         </button>
 
-        <!-- iOS Style Dropdown Menu -->
         <div class="ios-menu-dropdown" id="iosMenu">
           <div class="menu-header">My Profile</div>
-          
-          <a href="https://wa.me/94714566077" target="_blank" class="ios-menu-item">
+          <a href="https://wa.me/94714566077" target="_blank" rel="noopener noreferrer" class="ios-menu-item">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
             </svg>
             <span>WhatsApp (+94714566077)</span>
           </a>
-
-          <a href="https://t.me/vishu_official" target="_blank" class="ios-menu-item">
+          <a href="https://t.me/vishu_official" target="_blank" rel="noopener noreferrer" class="ios-menu-item">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="22" y1="2" x2="11" y2="13"></line>
               <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -710,7 +821,7 @@
           </a>
         </div>
 
-        <a href="https://t.me/vishu_official" target="_blank" class="btn-telegram">
+        <a href="https://t.me/vishu_official" target="_blank" rel="noopener noreferrer" class="btn-telegram">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
             <line x1="22" y1="2" x2="11" y2="13"></line>
             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -722,29 +833,25 @@
   </header>
 
   <main>
-    <!-- App Hero Header -->
     <section class="app-hero">
-      <div class="ios-app-icon">
-        RTC
-      </div>
+      <div class="ios-app-icon">RTC</div>
       <div class="app-hero-info">
         <div>
           <h1 class="app-title">RTC Tool System</h1>
           <div class="app-subtitle">Fast, Secure &amp; Lightweight Tool Suite</div>
         </div>
         <div class="hero-actions">
-          <a href="https://download1530.mediafire.com/e5lyes7lgx7gUZQzJCRqsNI9rSnwkspw3PVTPby82YP4a6ZAl2yCAe2r8prfOxOM8znIrVpNBEvEi04PqmaavkApPlsYyAA3QNPpjthjCwF0tw7F491NOUsYaj5Wbov55DKWfR5FEcH8R0VFTa4xBfXqQLHn9GiPHRjyjU6g7ej8T2Ob/3z3qtbcm36i5v5j/RTC-Tool-System-debug.apk" target="_blank" class="btn-get">Get APK</a>
-          <span class="version-pill">v1.2.0</span>
+          <button type="button" class="btn-get download-trigger">Get APK</button>
+          <span class="version-pill">v1.0.4 beta</span>
         </div>
       </div>
     </section>
 
-    <!-- Glass Metrics Strip -->
     <section class="ios-metrics-bar">
       <div class="metric-col">
-        <span class="metric-top">Rating</span>
-        <span class="metric-main">4.9 ★</span>
-        <span class="metric-sub">500K+ Downloads</span>
+        <span class="metric-top">Developer</span>
+        <span class="metric-main">VisH ★</span>
+        <span class="metric-sub">Vishal Arunalu</span>
       </div>
       <div class="metric-col">
         <span class="metric-top">Compatibility</span>
@@ -753,20 +860,18 @@
       </div>
       <div class="metric-col">
         <span class="metric-top">Package Size</span>
-        <span class="metric-main">15.96 MB</span>
+        <span class="metric-main">18.64 MB</span>
         <span class="metric-sub">Free APK</span>
       </div>
     </section>
 
-    <!-- Overview Card -->
     <div class="ios-card">
       <p><strong>Fast, Secure &amp; Lightweight.</strong> An advanced Android utility and communication customization tool featuring enhanced privacy controls, anti-revoke protection, and lossless media sharing.</p>
     </div>
-    <div class="meta-footer-note" id="download">
+    <div class="meta-footer-note">
       Updated November 17, 2026 &middot; Compatible with Android Package Installer / Custom Managers
     </div>
 
-    <!-- Key Features -->
     <div class="ios-section-header">
       <h2 class="ios-section-title">Features</h2>
     </div>
@@ -785,22 +890,20 @@
       </div>
     </div>
 
-    <!-- About Section -->
     <div class="ios-section-header">
       <h2 class="ios-section-title">About RTC Tool System</h2>
     </div>
     <div class="ios-card">
-      <p><strong>RTC Tool System</strong> delivers powerful feature additions to your Android device, including granular privacy toggles, uncompressed media capabilities, and extended playback controls. Independently developed.</p>
+      <p><strong>RTC Tool System</strong> delivers practical feature additions to your Android device, including granular privacy toggles, media options, and lightweight built-in tools in a compact standalone package.</p>
     </div>
 
-    <!-- Information Table -->
     <div class="ios-section-header">
       <h2 class="ios-section-title">Information</h2>
     </div>
     <div class="ios-list-group">
       <div class="ios-list-row">
         <span class="ios-row-label">Version</span>
-        <span class="ios-row-value">1.2.0</span>
+        <span class="ios-row-value">1.0.4 beta</span>
       </div>
       <div class="ios-list-row">
         <span class="ios-row-label">Package Type</span>
@@ -808,7 +911,7 @@
       </div>
       <div class="ios-list-row">
         <span class="ios-row-label">Size</span>
-        <span class="ios-row-value">15.96MB</span>
+        <span class="ios-row-value">18.64MB</span>
       </div>
       <div class="ios-list-row">
         <span class="ios-row-label">Compatibility</span>
@@ -824,7 +927,7 @@
       </div>
       <div class="ios-list-row">
         <span class="ios-row-label">Repository</span>
-        <span class="ios-row-value"><a href="https://download1530.mediafire.com/e5lyes7lgx7gUZQzJCRqsNI9rSnwkspw3PVTPby82YP4a6ZAl2yCAe2r8prfOxOM8znIrVpNBEvEi04PqmaavkApPlsYyAA3QNPpjthjCwF0tw7F491NOUsYaj5Wbov55DKWfR5FEcH8R0VFTa4xBfXqQLHn9GiPHRjyjU6g7ej8T2Ob/3z3qtbcm36i5v5j/RTC-Tool-System-debug.apk" target="_blank">Direct APK Link</a></span>
+        <span class="ios-row-value"><a href="#" class="download-trigger">Direct APK Link</a></span>
       </div>
       <div class="ios-list-row">
         <span class="ios-row-label">Languages</span>
@@ -833,14 +936,58 @@
     </div>
   </main>
 
+  <!-- --- Download Mirror Modal --- -->
+  <div class="ios-modal-overlay" id="downloadModal">
+    <div class="ios-modal-card">
+      <button type="button" class="modal-close-btn" id="closeModalBtn" aria-label="Close Modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <h3 class="modal-title">Select Mirror</h3>
+      <p class="modal-desc">Choose a server to download<br>RTC Tool System (v1.0.4 beta).</p>
+
+      <div class="modal-actions">
+        <a href="https://drive.google.com/uc?id=1ClV4DPHPyqqe51bv7Je_fk8R-s4bqUZD" target="_blank" rel="noopener noreferrer" class="btn-modal btn-drive">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Google Drive
+        </a>
+
+        <a href="https://download1530.mediafire.com/e5lyes7lgx7gUZQzJCRqsNI9rSnwkspw3PVTPby82YP4a6ZAl2yCAe2r8prfOxOM8znIrVpNBEvEi04PqmaavkApPlsYyAA3QNPpjthjCwF0tw7F491NOUsYaj5Wbov55DKWfR5FEcH8R0VFTa4xBfXqQLHn9GiPHRjyjU6g7ej8T2Ob/3z3qtbcm36i5v5j/RTC-Tool-System-debug.apk" target="_blank" rel="noopener noreferrer" class="btn-modal btn-mediafire">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          MediaFire
+        </a>
+
+        <a href="https://mega.nz/file/amwEBRTI#wLR66elVdtfR0AzV4cSF52pcLDbJT_B_Y6iK6sPwdYY" target="_blank" rel="noopener noreferrer" class="btn-modal btn-mega">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Mega
+        </a>
+      </div>
+    </div>
+  </div>
+
   <script>
-    /* --- Page Load Handler --- */
-    window.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        document.getElementById('pageLoader').classList.add('fade-out');
-        document.body.classList.add('loaded');
-      }, 350);
-    });
+    const loader = document.getElementById('pageLoader');
+    function revealPage() {
+      loader.classList.add('fade-out');
+      document.body.classList.add('loaded');
+    }
+    window.addEventListener('load', () => setTimeout(revealPage, 250));
+    setTimeout(revealPage, 1500);
 
     const htmlElem = document.documentElement;
     const themeToggleBtn = document.getElementById('themeToggle');
@@ -852,43 +999,70 @@
     const moonSvg = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
 
     function updateIcon() {
-      if (htmlElem.getAttribute('data-theme') === 'dark') {
-        themeIcon.innerHTML = sunSvg;
-      } else {
-        themeIcon.innerHTML = moonSvg;
-      }
+      themeIcon.innerHTML = htmlElem.getAttribute('data-theme') === 'dark' ? sunSvg : moonSvg;
     }
-
     updateIcon();
 
     themeToggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const currentTheme = htmlElem.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      htmlElem.setAttribute('data-theme', newTheme);
+      const nextTheme = htmlElem.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      htmlElem.setAttribute('data-theme', nextTheme);
       updateIcon();
     });
 
     menuToggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      iosMenu.classList.toggle('active');
+      const isOpen = iosMenu.classList.toggle('active');
+      menuToggleBtn.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    iosMenu.addEventListener('click', (e) => {
+      e.stopPropagation();
     });
 
     document.addEventListener('click', () => {
       if (iosMenu.classList.contains('active')) {
         iosMenu.classList.remove('active');
+        menuToggleBtn.setAttribute('aria-expanded', 'false');
       }
     });
 
-    /* Disable text selection context actions and copy triggers */
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('selectstart', e => e.preventDefault());
 
-    /* --- High-Performance Falling Blue Glass Triangles Animation --- */
+    const downloadModal = document.getElementById('downloadModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const downloadTriggers = document.querySelectorAll('.download-trigger');
+
+    downloadTriggers.forEach(trigger => {
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        downloadModal.classList.add('active');
+      });
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      downloadModal.classList.remove('active');
+    });
+
+    downloadModal.addEventListener('click', (e) => {
+      if (e.target === downloadModal) {
+        downloadModal.classList.remove('active');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && downloadModal.classList.contains('active')) {
+        downloadModal.classList.remove('active');
+      }
+    });
+
     const canvas = document.getElementById('glassCanvas');
     const ctx = canvas.getContext('2d', { alpha: true });
 
-    let width, height;
+    let width = 0;
+    let height = 0;
+
     function resize() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
@@ -896,33 +1070,28 @@
     window.addEventListener('resize', resize);
     resize();
 
-    const shardCount = window.innerWidth < 768 ? 16 : 24;
-    const shards = [];
-
-    for (let i = 0; i < shardCount; i++) {
-      shards.push({
-        x: Math.random() * width,
-        y: Math.random() * height - height,
-        size: Math.random() * 28 + 16,
-        speed: Math.random() * 1.0 + 0.5,
-        rot: Math.random() * Math.PI * 2,
-        rotSpeed: (Math.random() - 0.5) * 0.02,
-        opacity: Math.random() * 0.3 + 0.15
-      });
-    }
+    const shardCount = window.innerWidth < 768 ? 14 : 22;
+    const shards = Array.from({ length: shardCount }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height - height,
+      size: Math.random() * 26 + 15,
+      speed: Math.random() * 0.9 + 0.45,
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.018,
+      opacity: Math.random() * 0.28 + 0.14
+    }));
 
     function animateGlass() {
       ctx.clearRect(0, 0, width, height);
-
       const isDark = htmlElem.getAttribute('data-theme') === 'dark';
 
       for (let i = 0; i < shards.length; i++) {
-        let s = shards[i];
+        const s = shards[i];
         s.y += s.speed;
         s.rot += s.rotSpeed;
 
-        if (s.y > height + 100) {
-          s.y = -100;
+        if (s.y > height + 90) {
+          s.y = -90;
           s.x = Math.random() * width;
         }
 
@@ -932,17 +1101,14 @@
 
         const grad = ctx.createLinearGradient(0, -s.size, s.size, s.size);
         if (isDark) {
-          grad.addColorStop(0, `rgba(10, 132, 255, ${s.opacity * 1.3})`);
-          grad.addColorStop(1, `rgba(0, 100, 255, ${s.opacity * 0.4})`);
+          grad.addColorStop(0, `rgba(10, 132, 255, ${s.opacity * 1.25})`);
+          grad.addColorStop(1, `rgba(0, 100, 255, ${s.opacity * 0.35})`);
         } else {
-          grad.addColorStop(0, `rgba(0, 122, 255, ${s.opacity * 0.9})`);
-          grad.addColorStop(1, `rgba(50, 160, 255, ${s.opacity * 0.3})`);
+          grad.addColorStop(0, `rgba(0, 122, 255, ${s.opacity * 0.85})`);
+          grad.addColorStop(1, `rgba(50, 160, 255, ${s.opacity * 0.28})`);
         }
 
         ctx.fillStyle = grad;
-        ctx.shadowColor = 'rgba(10, 132, 255, 0.35)';
-        ctx.shadowBlur = 10;
-
         ctx.beginPath();
         ctx.moveTo(0, -s.size);
         ctx.lineTo(s.size * 0.866, s.size * 0.5);
@@ -950,7 +1116,7 @@
         ctx.closePath();
         ctx.fill();
 
-        ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.7)';
+        ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.32)' : 'rgba(255, 255, 255, 0.65)';
         ctx.lineWidth = 0.8;
         ctx.stroke();
 
